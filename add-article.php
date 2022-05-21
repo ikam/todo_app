@@ -29,7 +29,7 @@
                     <p class="text-error"></p>
                 </div>
                 <div class="form-control">
-                    <label for="category">Categories</label>
+                    <label for="category">Catégories</label>
                     <select name="category" id="category">
                         <option value="Technologie">Technologie</option>
                         <option value="Nature">Nature</option>
