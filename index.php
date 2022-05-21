@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
     <?php require_once 'includes/head.php' ?>
-    <title>TODO APP</title>
+    <title>BLOG APP</title>
 </head>
 
 <body>
