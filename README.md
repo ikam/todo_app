@@ -1,7 +1,6 @@
 # Application blog
 
-Application écrite en PHP qui donne la possibilities aux utilisateurs de publier des articles
-Avec un systeme d'authentification
+Application écrite en PHP qui donne la possibilité aux utilisateurs de publier des articles avec un système d'authentification
 
 ## Techno utilisees
 
