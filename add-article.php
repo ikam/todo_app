@@ -43,7 +43,7 @@
                     <p class="text-error"></p>
                 </div>
                 <div class="form-action">
-                    <a href="/" class="btn btn-secondary" type="buttom">Annuler</a>
+                    <a href="/" class="btn btn-secondary" type="button">Annuler</a>
                     <buttom class="btn btn-primary">Publier</buttom>
                 </div>
             </form>
