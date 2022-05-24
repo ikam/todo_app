@@ -1,3 +1,8 @@
+.category-container h2 {
+    font-size: 1.9rem;
+    padding: 0 1.5rem;
+}
+
 .articles-container {
     display: flex;
     flex-flow: row wrap;
@@ -10,19 +15,15 @@
     margin: 1rem;
     min-height: 41rem;
     cursor: pointer;
+    overflow: hidden;
 }
 
-.article h2 {
+.article h3 {
     font-size: 1.5rem;
     padding: 1rem 1.5rem;
 }
-
 .article:hover .img-container {
     transform: scale(1.2);
-}
-
-.overflow {
-    overflow: hidden;
 }
 
 .img-container {
