@@ -10,9 +10,11 @@ $selectedCat = $_GET['cat'] ?? '';
 
 if (file_exists($filename)) {
     $articles = json_decode(file_get_contents($filename), true) ?? [];
+
+    // Pour chaque article je récupère la catégorie
     $catmap = array_map(fn($a) => $a['category'], $articles);
 
-    // je crée un tableau associatif qui a pour clés les categories et pour valeur le nombre d'articles
+    // Je crée un tableau associatif qui a pour clés les categories et pour valeur le nombre d'articles
     $categories = array_reduce($catmap, function ($acc, $cat) {
         if (isset($acc[$cat])) {
             $acc[$cat]++;
@@ -24,7 +26,7 @@ if (file_exists($filename)) {
 
     // print_r($categories);
 
-    // je crée un tableau associatif qui a pour clés les categories et pour valeur tous les articles
+    // Je crée un tableau associatif qui a pour clés les categories et pour valeur tous les articles,
     // concernant la catégorie
     $articlesPerCategories = array_reduce($articles, function ($acc, $article) {
         if (isset($acc[$article['category']])) {
