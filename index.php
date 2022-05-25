@@ -42,14 +42,12 @@ if (file_exists($filename)) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="fr">
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="public/css/index.css">
-    <title>Blog PHP</title>
+    <title>BLOG PHP</title>
 </head>
-
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
@@ -105,5 +103,4 @@ if (file_exists($filename)) {
     <?php require_once 'includes/footer.php' ?>
 </div>
 </body>
-
 </html>
