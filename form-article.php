@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="public/css/form-article.css">
@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="form-control">
                     <label for="title">Contenu</label>
-                    <textarea name="content" id="content"><?= $content ?? '' ?></textarea>
+                    <label for="content"></label><textarea name="content" id="content"><?= $content ?? '' ?></textarea>
                     <?php if ($errors['content']) : ?>
                         <p class="text-danger"><?= $errors['content'] ?></p>
                     <?php endif; ?>

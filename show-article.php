@@ -16,7 +16,7 @@ if (!$id) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="public/css/show-article.css">
