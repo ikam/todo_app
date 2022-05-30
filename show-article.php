@@ -6,12 +6,10 @@ $id = $_GET['id'] ?? '';
 
 if (!$id) {
     header('Location: /');
-} else {
-    if (file_exists($filename)) {
-        $articles = json_decode(file_get_contents($filename), true) ?? [];
-        $articleIdx = array_search($id, array_column($articles, 'id'));
-        $article = $articles[$articleIdx];
-    }
+} else if (file_exists($filename)) {
+    $articles = json_decode(file_get_contents($filename), true) ?? [];
+    $articleIdx = array_search($id, array_column($articles, 'id'));
+    $article = $articles[$articleIdx];
 }
 
 ?>
@@ -21,7 +19,7 @@ if (!$id) {
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="public/css/show-article.css">
-    <title>Document</title>
+    <title>Affichage de l'article</title>
 </head>
 <body>
 <div class="container">
