@@ -1,5 +1,5 @@
 <?php
-$filename = __DIR__.'/data/articles.json';
+$filename = __DIR__ . '/data/articles.json';
 $articles = [];
 $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $id = $_GET['id'] ?? '';
@@ -7,7 +7,7 @@ $id = $_GET['id'] ?? '';
 if (!$id) {
     header('Location: /');
 } else {
-    if(file_exists($filename)) {
+    if (file_exists($filename)) {
         $articles = json_decode(file_get_contents($filename), true) ?? [];
         $articleIdx = array_search($id, array_column($articles, 'id'));
         $article = $articles[$articleIdx];
@@ -33,7 +33,7 @@ if (!$id) {
             <div class="separator"></div>
             <p class="article-content"><?= $article['content'] ?></p>
             <div class="action">
-                <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id']?>">Editer l'article</a>
+                <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id'] ?>">Editer l'article</a>
             </div>
         </div>
     </div>
