@@ -15,7 +15,7 @@ $errors = [
     'content' => ''
 ];
 if (file_exists($filename)) {
-    $articles = json_decode(file_get_contents($filename), true) ?? [];
+    $articles = json_decode(json: file_get_contents($filename), associative: true) ?? [];
 }
 
 $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]];
         }
 
-        file_put_contents($filename, json_encode($articles));
+        file_put_contents($filename, data: json_encode($articles));
         header('Location: /');
     }
 

@@ -7,8 +7,8 @@ $id = $_GET['id'] ?? '';
 if (!$id) {
     header('Location: /');
 } else if (file_exists($filename)) {
-    $articles = json_decode(file_get_contents($filename), true) ?? [];
-    $articleIdx = array_search($id, array_column($articles, 'id'));
+    $articles = json_decode(json: file_get_contents($filename), associative: true) ?? [];
+    $articleIdx = array_search($id, haystack: array_column($articles, 'id'));
     $article = $articles[$articleIdx];
 }
 
