@@ -19,7 +19,8 @@
     font-size: 1.8rem;
 }
 
-.form-control input, .form-control select {
+.form-control input,
+.form-control select {
     border: var(--border);
     border-radius: 3px;
     padding: 1rem 1.5rem;

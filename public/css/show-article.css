@@ -1,6 +1,5 @@
 .article-container {
     padding-bottom: 10rem;
-
 }
 
 .article-cover-img {
@@ -23,14 +22,20 @@
 
 .article-back {
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     text-decoration: underline;
     cursor: pointer;
     display: block;
     margin-bottom: 1rem;
-    transition: color 0.3s;
 }
 
 .article-back:hover {
     color: var(--primary);
+}
+
+.action {
+    margin-top: 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
 }
