@@ -1,8 +1,8 @@
 <?php
-const ERROR_REQUIRED = "Veuillez renseigner ce champs";
-const ERROR_TITLE_TOO_SHORT = "Le titre est trop court";
-const ERROR_CONTENT_TOO_SHORT = "L'article est trop court";
-const ERROR_IMAGE_URL = "L'image doit être une url valide";
+const ERROR_REQUIRED = "Veuillez renseigner ce champs !";
+const ERROR_TITLE_TOO_SHORT = "Le titre est trop court !";
+const ERROR_CONTENT_TOO_SHORT = "L'article est trop court !";
+const ERROR_IMAGE_URL = "L'image doit être une url valide !";
 
 $filename = __DIR__ . '/data/articles.json';
 $articles = [];
@@ -22,7 +22,7 @@ $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $id = $_GET['id'] ?? '';
 
 if ($id) {
-    $articleIdx = array_search($id, array_column($articles, 'id'));
+    $articleIdx = array_search($id, array_column($articles, 'id'), true);
     $article = $articles[$articleIdx];
 
     $title = $article['title'];
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php require_once 'includes/header.php' ?>
     <div class="content">
         <div class="block p-20 form-container">
-            <h1><?= $id ? 'Modifier' : 'Ecrire' ?> un article</h1>
+            <h1><?= $id ? 'Modifier' : 'Écrire' ?> un article</h1>
             <form action="/form-article.php<?= $id ? "?id=$id" : '' ?>" method="POST">
                 <div class="form-control">
                     <label for="title">Titre</label>
