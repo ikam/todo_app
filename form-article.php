@@ -9,10 +9,10 @@ $statementUpdateOne = $pdo->prepare('
 ');
 $statementReadOne = $pdo->prepare('SELECT * FROM article WHERE id=:id');
 
-const ERROR_REQUIRED = "Veuillez renseigner ce champ";
-const ERROR_TITLE_TOO_SHORT = "Le titre est trop court";
-const ERROR_CONTENT_TOO_SHORT = "L'article est trop court";
-const ERROR_IMAGE_URL = "L'image doit être une url valide";
+const ERROR_REQUIRED = "Veuillez renseigner ce champ !";
+const ERROR_TITLE_TOO_SHORT = "Le titre est trop court !";
+const ERROR_CONTENT_TOO_SHORT = "L'article est trop court !";
+const ERROR_IMAGE_URL = "L'image doit être une url valide !";
 
 $category = '';
 
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty(array_filter($errors, fn($e) => $e !== ''))) {
 
         if ($id) {
-
+            //On met à jour la bdd
             $statementUpdateOne->bindValue(':title', $title);
             $statementUpdateOne->bindValue(':category', $category);
             $statementUpdateOne->bindValue(':content', $content);
@@ -93,7 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $statementCreateOne->bindValue(':image', $image);
             $statementCreateOne->execute();
         }
-
         header('Location: /');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-/** @var TYPE_NAME $pdo */
+
 $pdo = require './database.php';
 $statement = $pdo->prepare('SELECT * FROM article');
 $statement->execute();
@@ -24,8 +24,6 @@ if (count($articles)) {
         }
         return $acc;
     }, []);
-
-    // print_r($categories);
 
     // Je crée un tableau associatif qui a pour clés les categories et pour valeur tous les articles,
     // concernant la catégorie

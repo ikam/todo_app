@@ -1,12 +1,12 @@
 <?php
 
-$articles = json_decode(file_get_contents('./data/articles.json'), true);
+$articles = json_decode(json: file_get_contents('./data/articles.json'), associative: true);
 $dns = 'mysql:host=localhost:3306;dbname=blog';
 $user = 'root';
 $pwd = '112233';
 
 $pdo = new PDO($dns, $user, $pwd);
-$statement = $pdo->prepare('
+$statement = $pdo->prepare(query: '
     INSERT INTO article (title, category, content, image) VALUES (:title, :category, :content, :image)
 ');
 
