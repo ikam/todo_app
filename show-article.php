@@ -1,15 +1,17 @@
 <?php
-$filename = __DIR__ . '/data/articles.json';
-$articles = [];
+
+$pdo = require './database.php';
+$statement = $pdo->prepare('SELECT * FROM article WHERE id=:id');
+
 $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $id = $_GET['id'] ?? '';
 
 if (!$id) {
     header('Location: /');
-} else if (file_exists($filename)) {
-    $articles = json_decode(json: file_get_contents($filename), associative: true) ?? [];
-    $articleIdx = array_search($id, haystack: array_column($articles, 'id'));
-    $article = $articles[$articleIdx];
+} else {
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $article = $statement->fetch();
 }
 
 ?>

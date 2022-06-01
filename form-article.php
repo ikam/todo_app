@@ -1,11 +1,19 @@
 <?php
-const ERROR_REQUIRED = "Veuillez renseigner ce champs !";
-const ERROR_TITLE_TOO_SHORT = "Le titre est trop court !";
-const ERROR_CONTENT_TOO_SHORT = "L'article est trop court !";
-const ERROR_IMAGE_URL = "L'image doit être une url valide !";
 
-$filename = __DIR__ . '/data/articles.json';
-$articles = [];
+$pdo = require './database.php';
+$statementCreateOne = $pdo->prepare('
+    INSERT INTO article (title, category, content, image) VALUES (:title, :category, :content, :image)
+');
+$statementUpdateOne = $pdo->prepare('
+    UPDATE article SET title=:title, category=:category, content=:content, image=:image WHERE id=:id
+');
+$statementReadOne = $pdo->prepare('SELECT * FROM article WHERE id=:id');
+
+const ERROR_REQUIRED = "Veuillez renseigner ce champ";
+const ERROR_TITLE_TOO_SHORT = "Le titre est trop court";
+const ERROR_CONTENT_TOO_SHORT = "L'article est trop court";
+const ERROR_IMAGE_URL = "L'image doit être une url valide";
+
 $category = '';
 
 $errors = [
@@ -14,16 +22,14 @@ $errors = [
     'category' => '',
     'content' => ''
 ];
-if (file_exists($filename)) {
-    $articles = json_decode(json: file_get_contents($filename), associative: true) ?? [];
-}
 
 $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $id = $_GET['id'] ?? '';
 
 if ($id) {
-    $articleIdx = array_search($id, array_column($articles, 'id'), true);
-    $article = $articles[$articleIdx];
+    $statementReadOne->bindValue(':id', $id);
+    $statementReadOne->execute();
+    $article = $statementReadOne->fetch();
 
     $title = $article['title'];
     $image = $article['image'];
@@ -31,9 +37,7 @@ if ($id) {
     $content = $article['content'];
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
 
     $_POST = filter_input_array(INPUT_POST, [
         'title' => FILTER_SANITIZE_SPECIAL_CHARS,
@@ -41,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'category' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'content' => [
             'filter' => FILTER_SANITIZE_SPECIAL_CHARS,
-            'flag' => FILTER_FLAG_NO_ENCODE_QUOTES //permet de ne pas encoder les apostrophes
+            'flag' => FILTER_FLAG_NO_ENCODE_QUOTES
         ]
     ]);
 
@@ -63,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!$category) {
-        $errors['title'] = ERROR_REQUIRED;
+        $errors['category'] = ERROR_REQUIRED;
     }
 
     if (!$content) {
@@ -75,26 +79,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty(array_filter($errors, fn($e) => $e !== ''))) {
 
         if ($id) {
-            $articles[$articleIdx]['title'] = $title;
-            $articles[$articleIdx]['image'] = $image;
-            $articles[$articleIdx]['category'] = $category;
-            $articles[$articleIdx]['content'] = $content;
+
+            $statementUpdateOne->bindValue(':title', $title);
+            $statementUpdateOne->bindValue(':category', $category);
+            $statementUpdateOne->bindValue(':content', $content);
+            $statementUpdateOne->bindValue(':image', $image);
+            $statementUpdateOne->bindValue(':id', $id);
+            $statementUpdateOne->execute();
         } else {
-            $articles = [$articles, [
-                'title' => $title,
-                'image' => $image,
-                'category' => $category,
-                'content' => $content,
-                'id' => time()
-            ]];
+            $statementCreateOne->bindValue(':title', $title);
+            $statementCreateOne->bindValue(':category', $category);
+            $statementCreateOne->bindValue(':content', $content);
+            $statementCreateOne->bindValue(':image', $image);
+            $statementCreateOne->execute();
         }
 
-        file_put_contents($filename, data: json_encode($articles));
         header('Location: /');
     }
-
 }
-
 
 ?>
 

@@ -1,19 +1,20 @@
 <?php
 
-$filename = __DIR__ . "/data/articles.json";
-$articles = [];
+/** @var TYPE_NAME $pdo */
+$pdo = require './database.php';
+$statement = $pdo->prepare('SELECT * FROM article');
+$statement->execute();
+$articles = $statement->fetchall();
+
 $categories = [];
 $selectedCat = '';
 
 $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $selectedCat = $_GET['cat'] ?? '';
 
-if (file_exists($filename)) {
-    $articles = json_decode(file_get_contents($filename), true) ?? [];
-
+if (count($articles)) {
     // Pour chaque article je récupère la catégorie
     $catmap = array_map(fn($a) => $a['category'], $articles);
-
     // Je crée un tableau associatif qui a pour clés les categories et pour valeur le nombre d'articles
     $categories = array_reduce($catmap, function ($acc, $cat) {
         if (isset($acc[$cat])) {
