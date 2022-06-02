@@ -1,10 +1,7 @@
 <?php
 
-
-$pdo = require './database.php';
-$statement = $pdo->prepare('SELECT * FROM article');
-$statement->execute();
-$articles = $statement->fetchall();
+$articleDAO = require './database/models/ArticleDAO.php';
+$articles = $articleDAO->getAll();
 
 $categories = [];
 $selectedCat = '';

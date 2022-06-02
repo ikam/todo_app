@@ -1,13 +1,6 @@
 <?php
 
-$pdo = require './database.php';
-$statementCreateOne = $pdo->prepare('
-    INSERT INTO article (title, category, content, image) VALUES (:title, :category, :content, :image)
-');
-$statementUpdateOne = $pdo->prepare('
-    UPDATE article SET title=:title, category=:category, content=:content, image=:image WHERE id=:id
-');
-$statementReadOne = $pdo->prepare('SELECT * FROM article WHERE id=:id');
+$articleDAO = require './database/models/ArticleDAO.php';
 
 const ERROR_REQUIRED = "Veuillez renseigner ce champ !";
 const ERROR_TITLE_TOO_SHORT = "Le titre est trop court !";
@@ -27,9 +20,7 @@ $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $id = $_GET['id'] ?? '';
 
 if ($id) {
-    $statementReadOne->bindValue(':id', $id);
-    $statementReadOne->execute();
-    $article = $statementReadOne->fetch();
+    $article = $articleDAO->getOne($id);
 
     $title = $article['title'];
     $image = $article['image'];
@@ -80,18 +71,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($id) {
             //On met à jour la bdd
-            $statementUpdateOne->bindValue(':title', $title);
-            $statementUpdateOne->bindValue(':category', $category);
-            $statementUpdateOne->bindValue(':content', $content);
-            $statementUpdateOne->bindValue(':image', $image);
-            $statementUpdateOne->bindValue(':id', $id);
-            $statementUpdateOne->execute();
+            $articleDAO->updateOne([
+                'title' => $title,
+                'category' => $category,
+                'content' => $content,
+                'image' => $image,
+                'id' => $id,
+            ]);
         } else {
-            $statementCreateOne->bindValue(':title', $title);
-            $statementCreateOne->bindValue(':category', $category);
-            $statementCreateOne->bindValue(':content', $content);
-            $statementCreateOne->bindValue(':image', $image);
-            $statementCreateOne->execute();
+            $articleDAO->createOne([
+                'title' => $title,
+                'category' => $category,
+                'content' => $content,
+                'image' => $image,
+            ]);
         }
         header('Location: /');
     }
