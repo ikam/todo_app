@@ -9,7 +9,7 @@
             <a href="/auth-login.php">Connexion</a>
         </li>
         <li class="<?= $_SERVER['REQUEST_URI'] === '/auth-logout.php' ? 'active' : '' ?>">
-            <a href="/auth/logout.php">Déconnexion</a>
+            <a href="/auth-logout.php">Déconnexion</a>
         </li>
         <li class="<?= $_SERVER['REQUEST_URI'] === '/profile.php' ? 'active' : '' ?>">
             <a href="/profile.php">Ma page</a>
