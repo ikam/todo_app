@@ -3,7 +3,7 @@
 :root {
     --font-family: 'Open Sans', sans-serif;
     --primary: #8e44ad;
-    --primary-dark: #721990;
+    --primary-dark: #74388e;
     --dark: #353b48;
     --danger: #e74c3c;
     --background_light: #ecf0f1;
@@ -41,6 +41,8 @@ a {
     color: inherit;
     text-decoration: none;
 }
+
+/* utils */
 
 .p-20 {
     padding: 20px;
@@ -98,80 +100,7 @@ a {
 }
 
 .low-opacity {
-    opacity: .2;
-}
-
-/* Header */
-
-header {
-    background-color: var(--primary);
-    padding: 1.5rem;
-    box-shadow: var(--box-shadow);
-    color: var(--text-color-light);
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.header-menu {
-    margin: 0;
-    display: flex;
-    flex-flow: row;
-}
-
-.header-menu li {
-    margin-left: 1rem;
-    border-radius: 3px;
-    padding: 5px 15px;
-    transition: background-color 0.3s;
-}
-
-.header-menu li:hover {
-    background-color: var(--primary-dark)
-}
-
-.active {
-    background-color: var(--primary-dark);
-}
-
-.logo {
-    font-weight: 600;
-    font-size: 2rem;
-    color: var(--text-color-light);
-}
-
-/* Content */
-
-.content {
-    max-width: 100rem;
-    width: 100%;
-    flex: 1;
-    display: flex;
-    flex-flow: column;
-    align-self: center;
-    padding: 2rem 0;
-    align-items: center;
-}
-
-.block {
-    border-radius: 3px;
-    border: var(--border);
-    background-color: white;
-    box-shadow: var(--box-shadow);
-}
-
-/* Footer */
-
-footer {
-    background-color: var(--dark);
-    display: flex;
-    flex-flow: row-reverse;
-}
-
-footer p {
-    color: var(--text-color-light);
-    padding: 1.5rem;
+    opacity: .4;
 }
 
 .form-container {
@@ -195,12 +124,11 @@ footer p {
     font-size: 1.8rem;
 }
 
-.form-control input,
-.form-control select {
+.form-control input, .form-control select {
     border: var(--border);
     border-radius: 3px;
     padding: 1rem 1.5rem;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 .form-control textarea {
@@ -208,7 +136,7 @@ footer p {
     border-radius: 3px;
     padding: 1rem 1.5rem;
     min-height: 20rem;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 .form-action {
@@ -216,4 +144,78 @@ footer p {
     flex-flow: row nowrap;
     justify-content: flex-end;
     margin-top: 2.5rem;
+}
+
+/* Header */
+
+header {
+    background-color: var(--primary);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    color: var(--text-color-light);
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-menu {
+    margin: 0;
+    display: flex;
+    flex-flow: row;
+
+}
+
+.header-menu li {
+    margin-left: 1rem;
+    border-radius: 3px;
+    padding: 5px 15px;
+    transition: background-color .3s;
+}
+
+.header-menu li:hover {
+    background-color: var(--primary-dark);
+}
+
+.active {
+    background-color: var(--primary-dark);
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 2rem;
+    color: var(--text-color-light);
+}
+
+/* Content */
+
+.content {
+    max-width: 100rem;
+    width: 100%;
+    flex: 1;
+    align-self: center;
+    display: flex;
+    flex-flow: column;
+    padding: 2rem 0;
+    align-items: center;
+}
+
+.block {
+    border-radius: 3px;
+    border: var(--border);
+    background-color: white;
+    box-shadow: var(--box-shadow);
+}
+
+/* Footer */
+
+footer {
+    background-color: var(--dark);
+    display: flex;
+    flex-flow: row-reverse;
+}
+
+footer p {
+    color: var(--text-color-light);
+    padding: 1.5rem;
 }

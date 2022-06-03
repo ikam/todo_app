@@ -1,11 +1,14 @@
 <?php
 
+$pdo = require './database/database.php';
+
 $articleDAO = require './database/models/ArticleDAO.php';
 
 const ERROR_REQUIRED = "Veuillez renseigner ce champ !";
 const ERROR_TITLE_TOO_SHORT = "Le titre est trop court !";
 const ERROR_CONTENT_TOO_SHORT = "L'article est trop court !";
 const ERROR_IMAGE_URL = "L'image doit être une url valide !";
+
 
 $category = '';
 
@@ -96,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <?php require_once 'includes/head.php' ?>
-<!--    <link rel="stylesheet" href="public/css/form-article.css">-->
+    <!--    <link rel="stylesheet" href="public/css/form-article.css">-->
     <title><?= $id ? 'Editer' : 'Créer' ?> un article</title>
 </head>
 <body>

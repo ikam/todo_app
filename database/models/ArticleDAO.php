@@ -1,6 +1,6 @@
 <?php
 
-$pdo = require __DIR__ . '/../database.php';
+$pdo = require './database/database.php';
 
 class ArticleDAO
 {

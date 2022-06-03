@@ -1,5 +1,7 @@
 <?php
 
+$pdo = require './database/database.php';
+
 $articleDAO = require './database/models/ArticleDAO.php';
 
 $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -8,7 +10,7 @@ $id = $_GET['id'] ?? '';
 if (!$id) {
     header('Location: /');
 } else {
-   $article = $articleDAO->getOne($id);
+    $article = $articleDAO->getOne($id);
 }
 
 ?>
@@ -31,7 +33,7 @@ if (!$id) {
             <div class="separator"></div>
             <p class="article-content"><?= $article['content'] ?></p>
             <div class="action">
-                <a class="btn btn-danger" href="/delete-article.php?id=<?= $article['id'] ?>">Supprimer</a>
+                <a class="btn" href="/delete-article.php?id=<?= $article['id'] ?>">Supprimer</a>
                 <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id'] ?>">Modifier l'article</a>
             </div>
         </div>

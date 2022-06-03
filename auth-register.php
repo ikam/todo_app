@@ -2,11 +2,11 @@
 
 $pdo = require './database/database.php';
 
-const ERROR_REQUIRED = 'Veuillez renseigner ce champ';
-const ERROR_TOO_SHORT = 'Ce champ est trop court';
-const ERROR_PASSWORD_TOO_SHORT = 'Le mot de passe doit faire au moins 6 caractères';
-const ERROR_EMAIL_INVALID = "L'email n'est pas valide";
-const ERROR_PASSWORD_MISMATCH = "Le mot de passe ne correspond pas";
+const ERROR_REQUIRED = 'Veuillez renseigner ce champ !';
+const ERROR_TOO_SHORT = 'Ce champ est trop court !';
+const ERROR_PASSWORD_TOO_SHORT = 'Le mot de passe doit faire au moins 6 caractères !';
+const ERROR_EMAIL_INVALID = "L'email n'est pas valide !";
+const ERROR_PASSWORD_MISMATCH = "Le mot de passe ne correspond pas !";
 
 $errors = [
     'firstname' => '',
@@ -62,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['confirm_password'] = ERROR_PASSWORD_MISMATCH;
     }
 
-
     if (empty(array_filter($errors, fn($e) => $e !== ''))) {
 
         $statement = $pdo->prepare(
@@ -116,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php if ($errors['email']) : ?>
                         <p class="text-danger"><?= $errors['email'] ?></p>
                     <?php endif; ?>
+
                 </div>
                 <div class="form-control">
                     <label for="password">Mot de passe</label>
@@ -133,8 +133,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
                 </div>
                 <div class="form-action">
-                    <a href='/' class="btn btn-danger" type="button">Annuler</a>
-                    <button class="btn btn-primary" type="submit">Enregistrer</button>
+                    <a href='/' class="btn" type="button">Annuler</a>
+                    <button class="btn btn-primary" type="submit">Valider</button>
                 </div>
             </form>
         </div>
