@@ -29,7 +29,7 @@ class ArticleDAO
 
     /**
      * Methode qui permet de créer un new article
-     * On lui laisse en paramêtre un tableau
+     * On lui laisse en paramètre un tableau
      * @param array $article
      * @return array
      */
