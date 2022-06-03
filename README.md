@@ -15,3 +15,4 @@ Application écrite en PHP qui donne la possibilité aux utilisateurs de publier
 * Ajouter un article
 * Modifier un article
 * Supprimer un article
+* Authentification
