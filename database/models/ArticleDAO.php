@@ -16,15 +16,15 @@ class ArticleDAO
     public function __construct(private PDO $pdo)
     {
 
-        $this->statementCreateOne = $this->pdo->prepare('
+        $this->statementCreateOne = $this->pdo->prepare(query: '
         INSERT INTO article (title, category, content,image) VALUES (:title, :category, :content, :image)');
 
-        $this->statementUpdateOne = $this->pdo->prepare('
+        $this->statementUpdateOne = $this->pdo->prepare(query: '
         UPDATE article SET title = :title, category = :category, content = :content, image = :image WHERE id = :id');
 
-        $this->statementReadOne = $this->pdo->prepare('SELECT * FROM article WHERE id=:id');
-        $this->statementReadAll = $this->pdo->prepare('SELECT * FROM article');
-        $this->statementDeleteOne = $this->pdo->prepare('DELETE FROM article WHERE id=:id');
+        $this->statementReadOne = $this->pdo->prepare(query: 'SELECT * FROM article WHERE id=:id');
+        $this->statementReadAll = $this->pdo->prepare(query: 'SELECT * FROM article');
+        $this->statementDeleteOne = $this->pdo->prepare(query: 'DELETE FROM article WHERE id=:id');
     }
 
     /**
