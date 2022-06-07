@@ -1,11 +1,13 @@
 <?php
 
 require __DIR__ . '/database/database.php';
-
 require __DIR__ . '/database/security.php';
 
 $currentUser = isLoggedIn();
 
+/**
+ * @var ArticleDAO
+ */
 $articleDAO = require './database/models/ArticleDAO.php';
 $articles = $articleDAO->getAll();
 
@@ -16,10 +18,10 @@ $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $selectedCat = $_GET['cat'] ?? '';
 
 if (count($articles)) {
-    // Pour chaque article je récupère la catégorie
     $catmap = array_map(fn($a) => $a['category'], $articles);
-    // Je crée un tableau associatif qui a pour clés les categories et pour valeur le nombre d'articles
-    $categories = array_reduce($catmap, function ($acc, $cat) {
+
+    //je crée un tableau associatif qui a pour clés les categories et pour valeur le nombre d'articles
+    $categories = array_reduce($catmap, function ($acc, $cat): mixed {
         if (isset($acc[$cat])) {
             $acc[$cat]++;
         } else {
@@ -27,10 +29,9 @@ if (count($articles)) {
         }
         return $acc;
     }, []);
+    //je crée un tableau associatif qui a pour clé les categories et pour valeur tous les articles de cette category
 
-    // Je crée un tableau associatif qui a pour clés les categories et pour valeur tous les articles,
-    // concernant la catégorie
-    $articlesPerCategories = array_reduce($articles, function ($acc, $article) {
+    $articlesPerCategories = array_reduce($articles, function ($acc, $article): mixed {
         if (isset($acc[$article['category']])) {
             $acc[$article['category']] = [...$acc[$article['category']], $article];
         } else {
@@ -45,20 +46,23 @@ if (count($articles)) {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="public/css/index.css">
-    <title>BLOG PHP</title>
+    <title>Blog APP</title>
 </head>
+
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
     <div class="content">
+
         <div class="newsfeed-container">
             <ul class="category-container">
                 <li class="<?= $selectedCat ? '' : 'cat-active' ?>">
                     <a href="/">
-                        Tous les articles<span class="small">(<?= count($articles) ?>)</span>
+                        Tous les articles <span class="small">(<?= count($articles) ?>)</span>
                     </a>
                 </li>
                 <?php foreach ($categories as $catName => $catNum) : ?>
@@ -69,6 +73,7 @@ if (count($articles)) {
                     </li>
                 <?php endforeach; ?>
             </ul>
+
             <div class="feed-container">
                 <?php if (!$selectedCat) : ?>
                     <?php foreach ($categories as $cat => $num) : ?>
@@ -80,6 +85,11 @@ if (count($articles)) {
                                         <div class="img-container"
                                              style="background-image: url(<?= $article['image'] ?>);"></div>
                                     </div>
+                                    <?php if ($article['author']) : ?>
+                                        <div class="article-author">
+                                            <p><?= $article['firstname'] . ' ' . $article['lastname'] ?></p>
+                                        </div>
+                                    <?php endif; ?>
                                     <h3><?= $article['title'] ?></h3>
                                 </a>
                             <?php endforeach; ?>
@@ -94,15 +104,24 @@ if (count($articles)) {
                                     <div class="img-container"
                                          style="background-image: url(<?= $article['image'] ?>);"></div>
                                 </div>
+                                <?php if ($article['author']) : ?>
+                                    <div class="article-author">
+                                        <p><?= $article['firstname'] . ' ' . $article['lastname'] ?></p>
+                                    </div>
+                                <?php endif; ?>
                                 <h3><?= $article['title'] ?></h3>
                             </a>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
+                <?php ?>
             </div>
         </div>
+
+
     </div>
     <?php require_once 'includes/footer.php' ?>
 </div>
 </body>
+
 </html>

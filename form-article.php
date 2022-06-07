@@ -1,14 +1,24 @@
 <?php
 
-$pdo = require './database/database.php';
+require_once __DIR__ . '/database/database.php';
+require_once __DIR__ . '/database/security.php';
+
+$currentUser = isLoggedIn();
+
+if (!$currentUser) {
+    header('Location: /');
+}
+
+/**
+ * @var ArticleDAO
+ */
 
 $articleDAO = require './database/models/ArticleDAO.php';
 
-const ERROR_REQUIRED = "Veuillez renseigner ce champ !";
-const ERROR_TITLE_TOO_SHORT = "Le titre est trop court !";
-const ERROR_CONTENT_TOO_SHORT = "L'article est trop court !";
-const ERROR_IMAGE_URL = "L'image doit être une url valide !";
-
+const ERROR_REQUIRED = "Veuillez renseigner ce champ";
+const ERROR_TITLE_TOO_SHORT = "Le titre est trop court";
+const ERROR_CONTENT_TOO_SHORT = "L'article est trop court";
+const ERROR_IMAGE_URL = "L'image doit etre une URL valide";
 
 $category = '';
 
@@ -23,8 +33,8 @@ $_GET = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $id = $_GET['id'] ?? '';
 
 if ($id) {
-    $article = $articleDAO->getOne($id);
 
+    $article = $articleDAO->getOne($id);
     $title = $article['title'];
     $image = $article['image'];
     $category = $article['category'];
@@ -38,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'image' => FILTER_SANITIZE_URL,
         'category' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'content' => [
-            'filter' => FILTER_SANITIZE_SPECIAL_CHARS,
+            'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             'flag' => FILTER_FLAG_NO_ENCODE_QUOTES
         ]
     ]);
@@ -73,22 +83,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty(array_filter($errors, fn($e) => $e !== ''))) {
 
         if ($id) {
-            //On met à jour la bdd
+
             $articleDAO->updateOne([
                 'title' => $title,
                 'category' => $category,
                 'content' => $content,
                 'image' => $image,
                 'id' => $id,
+                'author' => $currentUser['id']
             ]);
         } else {
+
             $articleDAO->createOne([
                 'title' => $title,
                 'category' => $category,
                 'content' => $content,
                 'image' => $image,
+                'author' => $currentUser['id']
             ]);
         }
+
         header('Location: /');
     }
 }
@@ -97,17 +111,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <?php require_once 'includes/head.php' ?>
-    <!--    <link rel="stylesheet" href="public/css/form-article.css">-->
-    <title><?= $id ? 'Editer' : 'Créer' ?> un article</title>
-</head>
+    <!-- <link rel="stylesheet" href="public/css/form-article.css"> -->
+    <title>Article</title></head>
+
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
     <div class="content">
         <div class="block p-20 form-container">
-            <h1><?= $id ? 'Modifier' : 'Écrire' ?> un article</h1>
+            <h1><?= $id ? 'Modifier ' : 'Créer ' ?>un article</h1>
             <form action="/form-article.php<?= $id ? "?id=$id" : '' ?>" method="POST">
                 <div class="form-control">
                     <label for="title">Titre</label>
@@ -117,35 +132,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
                 </div>
                 <div class="form-control">
-                    <label for="image">Images</label>
-                    <input type="text" name="image" id="image" value="<?= $image ?? '' ?>">
-                    <?php if ($errors['image']) : ?>
-                        <p class="text-danger"><?= $errors['image'] ?></p>
+                    <label for="title">Image</label>
+                    <input type="text" name="image" id="image" value="<?= $image ?? '' ?>"><label
+                            for="image"><?php if ($errors['image']) : ?></label>
+                    <p class="text-danger"><?= $errors['image'] ?></p>
                     <?php endif; ?>
                 </div>
                 <div class="form-control">
-                    <label for="category">Categorie</label>
+                    <label for="title">Catégorie</label>
                     <select name="category" id="category">
                         <option <?= !$category || $category === 'Technologie' ? 'selected' : '' ?> value="Technologie">
                             Technologie
                         </option>
-                        <option <?= $category === 'Nature' ? 'selected' : '' ?> value="Nature">Nature</option>
-                        <option <?= $category === 'Politique' ? 'selected' : '' ?> value="Politique">Politique</option>
-                    </select>
-                    <?php if ($errors['category']) : ?>
-                        <p class="text-danger"><?= $errors['category'] ?></p>
+                        <option <?= !$category || $category === 'Nature' ? 'selected' : '' ?> value="Nature">Nature
+                        </option>
+                        <option <?= !$category || $category === 'Politique' ? 'selected' : '' ?> value="Politique">
+                            Politique
+                        </option>
+                    </select><label for="category"><?php if ($errors['category']) : ?></label>
+                    <p class="text-danger"><?= $errors['category'] ?></p>
                     <?php endif; ?>
                 </div>
                 <div class="form-control">
                     <label for="title">Contenu</label>
-                    <label for="content"></label><textarea name="content" id="content"><?= $content ?? '' ?></textarea>
-                    <?php if ($errors['content']) : ?>
-                        <p class="text-danger"><?= $errors['content'] ?></p>
+                    <textarea name="content" id="content"><?= $content ?? '' ?></textarea><label
+                            for="content"><?php if ($errors['content']) : ?></label>
+                    <p class="text-danger"><?= $errors['content'] ?></p>
                     <?php endif; ?>
                 </div>
                 <div class="form-action">
-                    <a href="/" class="btn btn-secondary" type="button">Annuler</a>
-                    <button class="btn btn-primary" type="submit"><?= $id ? 'Sauvegarder' : 'Publier' ?></button>
+                    <a href='/' class="btn btn-danger" type="button">Annuler</a>
+                    <button class="btn btn-primary" type="submit"><?= $id ? 'Sauvegarder ' : 'Publier ' ?></button>
                 </div>
             </form>
         </div>
@@ -153,4 +170,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php require_once 'includes/footer.php' ?>
 </div>
 </body>
+
 </html>
