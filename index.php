@@ -39,9 +39,7 @@ if (count($articles)) {
         }
         return $acc;
     }, []);
-
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -52,12 +50,10 @@ if (count($articles)) {
     <link rel="stylesheet" href="public/css/index.css">
     <title>Blog APP</title>
 </head>
-
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
     <div class="content">
-
         <div class="newsfeed-container">
             <ul class="category-container">
                 <li class="<?= $selectedCat ? '' : 'cat-active' ?>">
@@ -73,7 +69,6 @@ if (count($articles)) {
                     </li>
                 <?php endforeach; ?>
             </ul>
-
             <div class="feed-container">
                 <?php if (!$selectedCat) : ?>
                     <?php foreach ($categories as $cat => $num) : ?>
@@ -117,8 +112,6 @@ if (count($articles)) {
                 <?php ?>
             </div>
         </div>
-
-
     </div>
     <?php require_once 'includes/footer.php' ?>
 </div>
