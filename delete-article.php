@@ -27,7 +27,6 @@ if ($id) {
     } else {
         header('Location :/');
     }
-
 }
 
 header('Location: /');
