@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
                 </div>
                 <div class="form-action">
-                    <a href='/' class="btn btn-danger" type="button">Annuler</a>
+                    <a href='/' class="btn" type="button">Annuler</a>
                     <button class="btn btn-primary" type="submit"><?= $id ? 'Sauvegarder ' : 'Publier ' ?></button>
                 </div>
             </form>
