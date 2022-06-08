@@ -12,11 +12,11 @@
     margin-right: 5px;
 }
 
-.articles-list li {
+.articles-list {
     width: 80%;
 }
 
-.articles-list li {
+.articles-list ul li {
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
