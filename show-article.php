@@ -29,7 +29,7 @@ if (!$id) {
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="public/css/show-article.css">
-    <title>Article</title>
+    <title>Articles</title>
 </head>
 
 <body>
@@ -37,7 +37,7 @@ if (!$id) {
     <?php require_once 'includes/header.php' ?>
     <div class="content">
         <div class="article-container">
-            <a href="/" class="article-back">> Retour à la liste des articles</a>
+            <a href="/" class="article-back">Retour à la liste des articles</a>
             <div class="article-cover-img" style="background-image: url(<?= $article['image'] ?>);"></div>
             <h1 class="article-title"><?= $article['title'] ?></h1>
             <div class="separator"></div>
@@ -46,7 +46,7 @@ if (!$id) {
             <?php if ($currentUser && $currentUser['id'] === $article['author']) : ?>
                 <div class="action">
                     <a class="btn" href="/delete-article.php?id=<?= $article['id'] ?>">Supprimer</a>
-                    <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id'] ?>">Éditer l'article</a>
+                    <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id'] ?>">Modifier</a>
                 </div>
             <?php endif; ?>
         </div>
