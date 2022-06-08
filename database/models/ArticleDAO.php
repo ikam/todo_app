@@ -14,7 +14,7 @@ class ArticleDAO
     /**
      * @param PDO $pdo
      */
-    public function __construct(private PDO $pdo) // $this->pdo = $pdo;
+    public function __construct(private PDO $pdo)
     {
         $this->statementCreateOne = $this->pdo->prepare('
             INSERT INTO article (title, category, content, image, author) VALUES (:title, :category, :content, :image, :author)
@@ -35,7 +35,6 @@ class ArticleDAO
             SELECT * FROM article WHERE author=:authorId
         ');
     }
-
 
     /**
      * @param array $article

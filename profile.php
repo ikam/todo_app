@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/database/database.php';
 require_once __DIR__ . '/database/security.php';
 
@@ -14,12 +15,10 @@ if (!$currentUser) {
 
 $articles = $articleDAO->fetchUserArticles($currentUser['id']);
 
-
 ?>
 
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <?php require_once 'includes/head.php' ?>
@@ -54,10 +53,10 @@ $articles = $articleDAO->fetchUserArticles($currentUser['id']);
             <ul>
                 <?php foreach ($articles as $article) : ?>
                     <li>
-                        <span><?= substr($article['title'], 0, 100) . ' ...' ?></span>
+                        <span><?= substr($article['title'], 0, 80) . ' ...' ?></span>
                         <div class="article-action">
                             <a class="btn btn-small" href="/delete-article.php?id=<?= $article['id'] ?>">Supprimer</a>
-                            <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id'] ?>">Éditer</a>
+                            <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id'] ?>">Modifier</a>
                         </div>
                     </li>
                 <?php endforeach; ?>
