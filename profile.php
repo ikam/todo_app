@@ -55,7 +55,7 @@ $articles = $articleDAO->fetchUserArticles($currentUser['id']);
                     <li>
                         <span><?= substr($article['title'], 0, 85) . ' ...' ?></span>
                         <div class="article-action">
-                            <a class="btn btn-small" href="/delete-article.php?id=<?= $article['id'] ?>">Supprimer</a>
+                            <a class="btn btn-small btn-danger" href="/delete-article.php?id=<?= $article['id'] ?>">Supprimer</a>
                             <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id'] ?>">Modifier</a>
                         </div>
                     </li>
