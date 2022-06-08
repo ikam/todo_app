@@ -21,7 +21,7 @@ if (count($articles)) {
     $catmap = array_map(fn($a) => $a['category'], $articles);
 
     //je crée un tableau associatif qui a pour clés les categories et pour valeur le nombre d'articles
-    $categories = array_reduce($catmap, function ($acc, $cat): mixed {
+    $categories = array_reduce($catmap, function ($acc, $cat) {
         if (isset($acc[$cat])) {
             $acc[$cat]++;
         } else {
@@ -29,9 +29,9 @@ if (count($articles)) {
         }
         return $acc;
     }, []);
-    //je crée un tableau associatif qui a pour clé les categories et pour valeur tous les articles de cette category
+    //je crée un tableau associatif qui a pour cle les categories et pour valeur tous les articles de cette categories
 
-    $articlesPerCategories = array_reduce($articles, function ($acc, $article): mixed {
+    $articlesPerCategories = array_reduce($articles, function ($acc, $article) {
         if (isset($acc[$article['category']])) {
             $acc[$article['category']] = [...$acc[$article['category']], $article];
         } else {
@@ -39,20 +39,25 @@ if (count($articles)) {
         }
         return $acc;
     }, []);
+
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="public/css/index.css">
     <title>Blog APP</title>
 </head>
+
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
     <div class="content">
+
         <div class="newsfeed-container">
             <ul class="category-container">
                 <li class="<?= $selectedCat ? '' : 'cat-active' ?>">
@@ -68,6 +73,7 @@ if (count($articles)) {
                     </li>
                 <?php endforeach; ?>
             </ul>
+
             <div class="feed-container">
                 <?php if (!$selectedCat) : ?>
                     <?php foreach ($categories as $cat => $num) : ?>
@@ -84,7 +90,7 @@ if (count($articles)) {
                                             <p><?= $article['firstname'] . ' ' . $article['lastname'] ?></p>
                                         </div>
                                     <?php endif; ?>
-                                    <h3><?= $article['title'] ?></h3>
+                                    <h3><?= substr($article['title'], 0, 100) . ' ...' ?></h3>
                                 </a>
                             <?php endforeach; ?>
                         </div>
@@ -111,6 +117,8 @@ if (count($articles)) {
                 <?php ?>
             </div>
         </div>
+
+
     </div>
     <?php require_once 'includes/footer.php' ?>
 </div>
