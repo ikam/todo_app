@@ -106,7 +106,6 @@ class AuthDAO
         return $user ?? false;
     }
 
-
     /**
      * @param string $sessionId
      * @return void
