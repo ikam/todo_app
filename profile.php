@@ -17,13 +17,11 @@ $articles = $articleDAO->fetchUserArticles($currentUser['id']);
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <?php require_once 'includes/head.php' ?>
     <link rel="stylesheet" href="public/css/profile.css">
     <title>Ma page</title>
 </head>
-
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
@@ -51,7 +49,7 @@ $articles = $articleDAO->fetchUserArticles($currentUser['id']);
             <ul>
                 <?php foreach ($articles as $article) : ?>
                     <li>
-                        <span><?= substr($article['title'], 0, 85) . ' ...' ?></span>
+                        <span><?= substr($article['title'], 0, 50) . ' ...' ?></span>
                         <div class="article-action">
                             <a class="btn btn-small btn-danger" href="/delete-article.php?id=<?= $article['id'] ?>">Supprimer</a>
                             <a class="btn btn-primary" href="/form-article.php?id=<?= $article['id'] ?>">Modifier</a>
@@ -64,5 +62,4 @@ $articles = $articleDAO->fetchUserArticles($currentUser['id']);
     <?php require_once 'includes/footer.php' ?>
 </div>
 </body>
-
 </html>
