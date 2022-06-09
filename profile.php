@@ -1,12 +1,10 @@
 <?php
 
 require_once __DIR__ . '/database/database.php';
-require_once __DIR__ . '/database/security.php';
-
-$currentUser = isLoggedIn();
+$authDAO = require __DIR__ . '/database/security.php';
+$currentUser = $authDAO->isLoggedIn();
 
 $articleDAO = require __DIR__ . '/database/models/ArticleDAO.php';
-
 $articles = [];
 
 if (!$currentUser) {

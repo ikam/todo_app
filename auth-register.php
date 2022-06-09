@@ -1,12 +1,16 @@
 <?php
 
 $pdo = require './database/database.php';
+/**
+ * @var AuthDAO
+ */
+$authDAO = require './database/security.php';
 
 const ERROR_REQUIRED = 'Veuillez renseigner ce champ !';
 const ERROR_TOO_SHORT = 'Ce champ est trop court !';
-const ERROR_PASSWORD_TOO_SHORT = 'Le mot de passe doit faire au moins 6 caractères !';
+const ERROR_PASSWORD_TOO_SHORT = 'Le mot de passe doit faire au moins 6 characters !';
+const ERROR_PASSWORD_MISMATCH = 'Le mot de passe de confirmation ne correspond pas !';
 const ERROR_EMAIL_INVALID = "L'email n'est pas valide !";
-const ERROR_PASSWORD_MISMATCH = "Le mot de passe ne correspond pas !";
 
 $errors = [
     'firstname' => '',
@@ -23,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'lastname' => FILTER_SANITIZE_SPECIAL_CHARS,
         'email' => FILTER_SANITIZE_EMAIL,
         'password' => '',
-        'confirm_password' => '',
+        'confirm_password' => ''
     ]);
 
     $firstname = $input['firstname'] ?? '';
@@ -34,50 +38,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$firstname) {
         $errors['firstname'] = ERROR_REQUIRED;
-    } elseif (mb_strlen($firstname) < 2) {
+    } else if (mb_strlen($firstname) < 2) {
         $errors['firstname'] = ERROR_TOO_SHORT;
     }
 
     if (!$lastname) {
         $errors['lastname'] = ERROR_REQUIRED;
-    } elseif (mb_strlen($lastname) < 2) {
+    } else if (mb_strlen($lastname) < 2) {
         $errors['lastname'] = ERROR_TOO_SHORT;
     }
 
     if (!$email) {
         $errors['email'] = ERROR_REQUIRED;
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = ERROR_EMAIL_INVALID;
     }
 
     if (!$password) {
         $errors['password'] = ERROR_REQUIRED;
-    } elseif (mb_strlen($password) < 6) {
+    } else if (mb_strlen($password) < 6) {
         $errors['password'] = ERROR_PASSWORD_TOO_SHORT;
     }
 
     if (!$confirm_password) {
         $errors['confirm_password'] = ERROR_REQUIRED;
-    } elseif ($confirm_password !== $password) {
+    } else if ($confirm_password !== $password) {
         $errors['confirm_password'] = ERROR_PASSWORD_MISMATCH;
     }
 
     if (empty(array_filter($errors, fn($e) => $e !== ''))) {
-
-        $statement = $pdo->prepare(
-            'INSERT INTO user VALUES (DEFAULT, :firstname, :lastname, :email, :password)'
-        );
-
-        $hashPassword = password_hash($password, PASSWORD_ARGON2I);
-        $statement->bindValue(':firstname', $firstname);
-        $statement->bindValue(':lastname', $lastname);
-        $statement->bindValue(':email', $email);
-        $statement->bindValue(':password', $hashPassword);
-        $statement->execute();
+        $authDAO->register([
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
+            'password' => $password,
+        ]);
 
         header('Location: /');
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="public/css/register.css">
     <title>Inscription</title>
 </head>
-
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
@@ -142,5 +141,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php require_once 'includes/footer.php' ?>
 </div>
 </body>
-
 </html>

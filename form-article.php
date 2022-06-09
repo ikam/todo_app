@@ -1,9 +1,8 @@
 <?php
 
 require_once __DIR__ . '/database/database.php';
-require_once __DIR__ . '/database/security.php';
-
-$currentUser = isLoggedIn();
+$authDAO = require __DIR__ . '/database/security.php';
+$currentUser = $authDAO->isLoggedIn();
 
 if (!$currentUser) {
     header('Location: /');
@@ -111,17 +110,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: /');
     }
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <?php require_once 'includes/head.php' ?>
     <!-- <link rel="stylesheet" href="public/css/form-article.css"> -->
-    <title>Article</title></head>
-
+    <title><?= $id ? 'Editer' : 'Créer' ?> un article</title>
+</head>
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
@@ -175,5 +172,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php require_once 'includes/footer.php' ?>
 </div>
 </body>
-
 </html>

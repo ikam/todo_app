@@ -1,11 +1,12 @@
 <?php
 
 $pdo = require './database/database.php';
+$authDAO = require './database/security.php';
 
-const ERROR_REQUIRED = 'Veuillez renseigner ce champ !';
-const ERROR_EMAIL_INVALID = "L'email n'est pas valide !";
-const ERROR_PASSWORD_MISMATCH = "Le mot de passe n'est pas valide !";
-const ERROR_EMAIL_UNKNOWN = "L'email n'est pas enregistré !";
+const ERROR_REQUIRED = 'Veuillez renseigner ce champ';
+const ERROR_EMAIL_INVALID = "L'email n'est pas valide";
+const ERROR_EMAIL_UNKNOWN = "L'email n'est pas enregistre";
+const ERROR_PASSWORD_MISMATCH = 'Le mot de passe n\'est pas valide';
 
 $errors = [
     'email' => '',
@@ -24,46 +25,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$email) {
         $errors['email'] = ERROR_REQUIRED;
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = ERROR_EMAIL_INVALID;
     }
 
-
     if (!$password) {
         $errors['password'] = ERROR_REQUIRED;
-    } elseif (mb_strlen($password) < 6) {
-        $errors['password'] = ERROR_PASSWORD_TOO_SHORT;
     }
 
     if (empty(array_filter($errors, fn($e) => $e !== ''))) {
-        $statementUser = $pdo->prepare(
-            'SELECT * FROM user WHERE email=:email'
-        );
-        $statementUser->bindValue(':email', $email);
-        $statementUser->execute();
-        $user = $statementUser->fetch();
+        $user = $authDAO->getUserFromEmail($email);
 
         if (!$user) {
             $errors['email'] = ERROR_EMAIL_UNKNOWN;
+        } else if (!password_verify($password, $user['password'])) {
+            $errors['password'] = ERROR_PASSWORD_MISMATCH;
         } else {
-            if (!password_verify($password, $user['password'])) {
-                $errors['password'] = ERROR_PASSWORD_MISMATCH;
-            } else {
-                $statementSession = $pdo->prepare(
-                    'INSERT INTO session VALUES (DEFAULT, :userid)'
-                );
-                $statementSession->bindValue(':userid', $user['id']);
-                $statementSession->execute();
-
-                // Recuperation de l'ID de session qu'on vient de creer
-                $sessionId = $pdo->lastInsertId();
-
-                // Creer notre cookie
-                setcookie('session', $sessionId, time() + 60 * 60 * 24 * 14, '', '', false, true);
-                header('Location: /');
-            }
+            $authDAO->login($user['id']);
+            header('Location: /');
         }
-
     }
 }
 ?>
@@ -75,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="public/css/login.css">
     <title>Connexion</title>
 </head>
-
 <body>
 <div class="container">
     <?php require_once 'includes/header.php' ?>
@@ -107,5 +86,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php require_once 'includes/footer.php' ?>
 </div>
 </body>
-
 </html>
