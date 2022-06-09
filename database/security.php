@@ -106,11 +106,12 @@ class AuthDAO
         return $user ?? false;
     }
 
+
     /**
-     * @param int $sessionId
+     * @param string $sessionId
      * @return void
      */
-    public function logout(int $sessionId): void
+    public function logout(string $sessionId): void
     {
         $this->statementDeleteSession->bindValue(':id', $sessionId);
         $this->statementDeleteSession->execute();
